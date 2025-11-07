@@ -1,12 +1,10 @@
 
-import { Copy, Check, FileCode, Bot, Loader, AlertTriangle } from 'lucide-react';
+import { Copy, Check, FileCode} from 'lucide-react';
 
 export interface PromptOutputProps {
     prompt: string;
     copied: boolean;
     onCopy: () => void;
-    icon?: string;
-    header?: string;
 
 }
 
@@ -15,7 +13,7 @@ export interface PromptOutputProps {
  * @param {{ PromptOutputProps }} props
  * <h2 className="text-xl font-semibold text-green-300"> 
  */
-export const PromptOutput = ({ prompt, copied, onCopy, icon= "", header= "" }: PromptOutputProps) => (
+export const PromptOutput = ({ prompt, copied, onCopy }: PromptOutputProps) => (
     <div className="bg-slate-800/70 backdrop-blur rounded-lg border border-slate-700 p-4 hover:border-blue-500">
         <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold text-blue-500 flex items-center gap-2"> 

@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { Copy, Check, FileCode, Bot, Loader, AlertTriangle } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import {  FileCode,  Loader } from 'lucide-react';
 
 import { useGeminiReview } from './hooks/useGeminiReview.tsx';
 import { generateDiff } from './utils/diffCalculator'; 
@@ -37,36 +37,15 @@ const CodeDiffPromptApp = () => {
   const { aiResponse, isLoading, error, fetchReview, setAiResponse, setError, setIsLoading } = useGeminiReview();
 
   // New state for AI output copy
-  const [aiCopied, setAiCopied] = useState<boolean>(false);
+  //  const [aiCopied, setAiCopied] = useState<boolean>(false);
 
   const diff = useMemo(() => generateDiff(originalCode, editedCode), [originalCode, editedCode]);
 
 
   const handleGeneratePrompt = () => {
-    //  const diff = generateDiff();
-    
-    const prompt = `Please analyze the following code changes and provide feedback:
 
-## Original Code:
-\`\`\`javascript
-${originalCode}
-\`\`\`
-
-## Modified Code:
-\`\`\`javascript
-${editedCode}
-\`\`\`
-
-## Diff:
-\`\`\`diff
-${diff}
-\`\`\`
-
-Please review these changes and provide:
-1. A summary of what changed
-2. Any potential issues or improvements
-3. Whether the changes follow best practices`;
-
+    const prompt = `${diff}`;
+ 
     setGeneratedPrompt(prompt);
     fetchReview(prompt);
   };
@@ -160,8 +139,6 @@ Please review these changes and provide:
               prompt={generatedPrompt}
               copied={copied}
               onCopy={handleCopyPrompt}
-              icon={"FileCode"}
-              header={"Code Review Prompt"}
             />
        
 
