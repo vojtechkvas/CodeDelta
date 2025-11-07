@@ -21,4 +21,4 @@ Application will be avalible at address http://localhost:8765, port can be chang
 
 **This is the design of the main web page.**
 
-![Screenshot of the application's main screen](doc_images/my-screenshot.png)
+![Screenshot of the application's main screen](doc_images/CodeDelta.png)
