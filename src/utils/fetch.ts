@@ -3,8 +3,6 @@
  * Exponential Backoff Retry Fetch implementation.
  */ 
 export const retryFetch = async (url:string, options?: RequestInit, maxRetries = import.meta.env.VITE_MAX_RETRIES) => {
-    console.log("retryFetch")
-    console.log(maxRetries)
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
             const response = await fetch(url, options);
