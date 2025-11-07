@@ -1,12 +1,11 @@
-import { useState, useMemo } from 'react';
-import {  FileCode,  Loader } from 'lucide-react';
+import { useState, useMemo } from "react";
+import { FileCode, Loader } from "lucide-react";
 
-import { useGeminiReview } from './hooks/useGeminiReview.tsx';
-import { generateDiff } from './utils/diffCalculator'; 
-import { EditorPanel } from './components/EditorPanel.tsx';
-import { PromptOutput } from './components/PromptOutput.tsx';
-import  AiResponsePanel  from './components/AiResponsePanel.tsx';
-
+import { useGeminiReview } from "./hooks/useGeminiReview.tsx";
+import { generateDiff } from "./utils/diffCalculator";
+import { EditorPanel } from "./components/EditorPanel.tsx";
+import { PromptOutput } from "./components/PromptOutput.tsx";
+import { AiResponsePanel } from "./components/AiResponsePanel.tsx";
 
 const initialOriginalCode = `function calculateTotal(items) {
   let total = 0;
@@ -25,52 +24,39 @@ function calculateTotal(items) {
   return items.reduce((total, item) => total + item.price, 0);
 }`;
 
-
-
 const CodeDiffPromptApp = () => {
   const [originalCode, setOriginalCode] = useState<string>(initialOriginalCode);
   const [editedCode, setEditedCode] = useState<string>(initialEditedCode);
-  const [generatedPrompt, setGeneratedPrompt] = useState<string>('');
-  const [copied, setCopied] = useState<boolean>(false);
-  
-  // Use the custom hook for AI-related state and fetching
-  const { aiResponse, isLoading, error, fetchReview, setAiResponse, setError, setIsLoading } = useGeminiReview();
+  const [generatedPrompt, setGeneratedPrompt] = useState<string>("");
 
-  // New state for AI output copy
-  //  const [aiCopied, setAiCopied] = useState<boolean>(false);
+  const {
+    aiResponse,
+    isLoading,
+    error,
+    fetchReview,
+    setAiResponse,
+    setError,
+    setIsLoading,
+  } = useGeminiReview();
 
-  const diff = useMemo(() => generateDiff(originalCode, editedCode), [originalCode, editedCode]);
-
+  const diff = useMemo(
+    () => generateDiff(originalCode, editedCode),
+    [originalCode, editedCode]
+  );
 
   const handleGeneratePrompt = () => {
-
     const prompt = `${diff}`;
 
     setGeneratedPrompt(prompt);
     fetchReview(prompt);
   };
 
-  const handleCopyPrompt = async () => {
-    try {
-      await navigator.clipboard.writeText(generatedPrompt);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy prompt:', err);
-      // Fallback behavior
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-  
-
-
   const handleReset = () => {
     setOriginalCode(initialOriginalCode);
     setEditedCode(initialEditedCode);
-    setGeneratedPrompt('');
-    setAiResponse(''); // Resetting state from the hook
-    setError(null);    // Resetting state from the hook
+    setGeneratedPrompt("");
+    setAiResponse(""); // Resetting state from the hook
+    setError(null); // Resetting state from the hook
     setIsLoading(false); // Resetting state from the hook
   };
 
@@ -84,9 +70,11 @@ const CodeDiffPromptApp = () => {
               CodeDelta
             </h1>
           </div>
-          <p className="text-slate-400">Edit code to create a diff and get instant feedback from a code review AI.</p>
+          <p className="text-slate-400">
+            Edit code to create a diff and get instant feedback from a code
+            review AI.
+          </p>
         </div>
-
 
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           <EditorPanel
@@ -102,20 +90,23 @@ const CodeDiffPromptApp = () => {
             colorClass="purple-500"
           />
         </div>
-      
-         
+
         {/* Controls */}
         <div className="flex gap-4 justify-center mb-10">
           <button
             onClick={handleGeneratePrompt}
             disabled={isLoading}
             className={`px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl font-bold transition-all transform shadow-lg 
-                       ${isLoading ? 'opacity-60 cursor-not-allowed' : 'hover:from-blue-600 hover:to-purple-600 hover:scale-[1.02] active:scale-[0.98]'}`}
+                       ${
+                         isLoading
+                           ? "opacity-60 cursor-not-allowed"
+                           : "hover:from-blue-600 hover:to-purple-600 hover:scale-[1.02] active:scale-[0.98]"
+                       }`}
           >
             {isLoading ? (
               <Loader className="w-5 h-5 animate-spin mx-auto text-white" />
             ) : (
-              'Generate Prompt & Get AI Review'
+              "Generate Prompt & Get AI Review"
             )}
           </button>
           <button
@@ -128,37 +119,18 @@ const CodeDiffPromptApp = () => {
 
         {/* Generated Prompt and AI Response */}
         {(generatedPrompt || isLoading || aiResponse || error) && (
-
-
           <div className="grid lg:grid-cols-2 gap-6">
-            
-        
-   
-         
-            <PromptOutput
-              prompt={generatedPrompt}
-              copied={copied}
-              onCopy={handleCopyPrompt}
+            <PromptOutput prompt={generatedPrompt} />
+            <AiResponsePanel
+              aiResponse={aiResponse}
+              isLoading={isLoading}
+              error={error}
             />
-       
-
-          <AiResponsePanel
-            aiResponse={aiResponse}
-            isLoading={isLoading}
-            error={error}
-          /> 
-
-           </div>  
+          </div>
         )}
-
       </div>
     </div>
   );
 };
 
 export default CodeDiffPromptApp;
-
-
-
-
-
