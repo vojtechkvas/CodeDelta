@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import { Bot, Copy, Check, Loader, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 
 interface AiResponsePanelProps {
   
-  aiResponse: string | null;
+  aiResponse: string;
   
   isLoading: boolean;
   

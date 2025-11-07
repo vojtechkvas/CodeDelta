@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { Copy, Check, FileCode, Bot, Loader, AlertTriangle } from 'lucide-react';
+import { useState, useCallback } from 'react';
 import { retryFetch } from '../utils/fetch.ts';
 
 
@@ -13,15 +12,15 @@ export const useGeminiReview = () => {
         setError(null);
         setAiResponse('');
 
-        const systemPrompt = "You are a world-class code reviewer and software architect. Analyze the provided original and modified code, including the unified diff. Your response should strictly follow the three requested points: 1. A summary of what changed. 2. Potential issues or improvements. 3. Whether the changes follow best practices. Maintain a helpful, professional, and constructive tone.";
-
-        const MAX_RETRIES = 3;
+        const systemPrompt = import.meta.env.VITE_SYSTEM_INSTRUCTION_PROMPT
+     //   const MAX_RETRIES = import.meta.env.VITE_MAX_RETRIES  ;
         const apiKey = import.meta.env.VITE_API_KEY
         const MODEL_NAME = import.meta.env.VITE_MODEL_NAME
 
 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
 
+        console.log(systemPrompt)
         console.log(MODEL_NAME)
 
         /*
@@ -59,8 +58,13 @@ export const useGeminiReview = () => {
             }
 
         } catch (err) {
-            setError(`Failed to fetch AI response: ${err.message}`);
-            console.error('API Error:', err);
+            if (isError(err)) {
+                setError(`Failed to fetch AI response: ${err.message}`);
+                console.error('API Error:', err);
+            } else {
+                setError("Failed to fetch AI response: An unknown error occurred.");
+                console.error('Unknown API Error:', err);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -68,3 +72,8 @@ export const useGeminiReview = () => {
 
     return { aiResponse, isLoading, error, fetchReview, setAiResponse, setError, setIsLoading };
 };
+
+
+function isError(e: any): e is Error {
+    return e && typeof e === 'object' && 'message' in e;
+}

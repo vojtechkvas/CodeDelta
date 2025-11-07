@@ -9,7 +9,7 @@ This project uses React + TypeScript + Vite
 
 Before start you have to add VITE_API_KEY inside file.env.
 You can get VITE_API_KEY at url https://aistudio.google.com/app/api-keys. There is no need for credit card registration.
-
+Also in .env can by found system instruction prompt.
 
 Application can be run inside docker:
 
