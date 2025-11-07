@@ -6,7 +6,7 @@ import { generateDiff } from './utils/diffCalculator';
 import { EditorPanel } from './components/EditorPanel.tsx';
 import { PromptOutput } from './components/PromptOutput.tsx';
 import  AiResponsePanel  from './components/AiResponsePanel.tsx';
- 
+
 
 const initialOriginalCode = `function calculateTotal(items) {
   let total = 0;
@@ -45,7 +45,7 @@ const CodeDiffPromptApp = () => {
   const handleGeneratePrompt = () => {
 
     const prompt = `${diff}`;
- 
+
     setGeneratedPrompt(prompt);
     fetchReview(prompt);
   };
@@ -81,7 +81,7 @@ const CodeDiffPromptApp = () => {
           <div className="flex items-center justify-center gap-3 mb-3">
             <FileCode className="w-10 h-10 text-blue-400" />
             <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Code Diff AI Reviewer
+              CodeDelta
             </h1>
           </div>
           <p className="text-slate-400">Edit code to create a diff and get instant feedback from a code review AI.</p>
