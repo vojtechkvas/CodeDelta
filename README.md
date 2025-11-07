@@ -18,3 +18,7 @@ docker compose up -d
 ```
 
 Application will be avalible at address http://localhost:8765, port can be change in file docker-compose.yaml.
+
+**This is the design of the main web page.**
+
+![Screenshot of the application's main screen](doc_images/my-screenshot.png)
